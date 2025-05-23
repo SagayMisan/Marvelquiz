@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvel MCU Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url(marvel02.png) no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: rgba(44, 44, 44, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+    h2 {
+      margin-bottom: 15px;
+    }
+    .option {
+      background: #444;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .option:hover {
+      background: #e62429;
+    }
+    #next-btn {
+      margin-top: 15px;
+      background: #e62429;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #score {
+      font-size: 1.2em;
+      text-align: center;
+      margin-top: 10px;
+    }
+    footer {
+      margin-top: 20px;
+      color: red;
+      font-size: 3.0em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Loading...</h2>
+    <div id="options"></div>
+    <button id="next-btn">Next</button>
+    <div id="score"></div>
+  </div>
+
+  <footer>MISAN'S MCU QUIZ</footer>
+
+  <script>
+    const quizData = [
+      {
+        question: "Who is the first Avenger?",
+        options: ["Iron Man", "Captain America", "Thor", "Hulk"],
+        answer: "Captain America",
+      },
+      {
+        question: "What is Thor's hammer called?",
+        options: ["Stormbreaker", "Gungnir", "Mjolnir", "Asgard"],
+        answer: "Mjolnir",
+      },
+      {
+        question: "Who killed Tony Stark's parents?",
+        options: ["Thanos", "Red Skull", "Loki", "Winter Soldier"],
+        answer: "Winter Soldier",
+      },
+      {
+        question: "What is the name of Black Panther's country?",
+        options: ["Zamunda", "Wakanda", "Latveria", "Genosha"],
+        answer: "Wakanda",
+      },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const scoreEl = document.getElementById("score");
+
+    function loadQuestion() {
+      const current = quizData[currentQuestion];
+      questionEl.textContent = current.question;
+      optionsEl.innerHTML = "";
+      current.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.className = "option";
+        btn.textContent = option;
+        btn.onclick = () => selectAnswer(option);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(option) {
+      const correct = quizData[currentQuestion].answer;
+      if (option === correct) score++;
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showScore();
+      }
+    }
+
+    function showScore() {
+      questionEl.textContent = "Quiz Complete!";
+      optionsEl.innerHTML = "";
+      nextBtn.style.display = "none";
+      scoreEl.textContent = `Your score: ${score}/${quizData.length}`;
+    }
+
+    nextBtn.style.display = "none";
+    loadQuestion();
+  </script>
+</body>
+</html>
